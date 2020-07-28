@@ -613,7 +613,6 @@ function perfChoose(ps, n)
         warn("returnedAlgoCount==requestedAlgoCount")
     end
     (ibest,mbest,tbest) = (0,Inf,Inf)
-    println(n)
     for i = 1:n
         # These metrics are written in a sorted fashion where the first element has the lowest compute time.
         if ps[i].status == 0 && ps[i].memory < mbest && ps[i].time < tbest * 1.1
