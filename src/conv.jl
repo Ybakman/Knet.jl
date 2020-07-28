@@ -352,7 +352,7 @@ function FD(T::Type, dims)
 end
 
 mutable struct CD; ptr
-    function CD(w::KnetArray,x::KnetArray; padding=0, stride=1, dilation=1, mode=0, upscale=nothing)
+    function CD(w::KnetArray,x::KnetArray; padding=0, stride=1, dilation=1, mode=0, upscale=nothing, group=1)
         upscale !== nothing && error("upscale is deprecated, please use dilation instead.")
         d = Cptr[0]
         # @cudnn(cudnnCreateConvolutionDescriptor,(Ptr{Cptr},),d)
@@ -375,6 +375,7 @@ mutable struct CD; ptr
         mode = CUDNN.cudnnConvolutionMode_t(mode)
         CUDNN.cudnnSetConvolutionNdDescriptor(d[1],nd,cdsize(padding,nd),cdsize(stride,nd),cdsize(dilation,nd),mode,dt)
         cd = new(d[1])
+        println(group)
         # finalizer(x->@cudnn(cudnnDestroyConvolutionDescriptor,(Cptr,),x.ptr),cd)
         finalizer(x->CUDNN.cudnnDestroyConvolutionDescriptor(x.ptr),cd)
         return cd
@@ -624,3 +625,4 @@ end
 
 # Fresh workspace for every op is safer:
 cudnnWorkSpace(len=0)=KnetArray{UInt8}(undef,len)
+
