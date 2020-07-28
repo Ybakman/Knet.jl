@@ -540,6 +540,7 @@ maxWorkspaceSize(w,x,y) = min(gpufree() ÷ 10, bytes(x) * 100)
 
 const conv4_algos = Dict()
 function conv4_algo(w::KnetArray{T}, x::KnetArray{T}, y::KnetArray{T}; handle=CUDNN.handle(), o...) where {T}
+    return (0, cudnnWorkSpace())
     global conv4_algos, requestedAlgoCount, returnedAlgoCount, perfResults
     key = (T,size(w),size(x),o...)
     if haskey(conv4_algos, key)
@@ -563,6 +564,7 @@ end
 
 const conv4w_algos = Dict()
 function conv4w_algo(w::KnetArray{T},x::KnetArray{T},dy::KnetArray{T},dw::KnetArray{T}; handle=CUDNN.handle(), o...) where {T}
+    return (0, cudnnWorkSpace())
     global conv4w_algos, requestedAlgoCount, returnedAlgoCount, perfResults
     key = (T,size(w),size(x),o...)
     if haskey(conv4w_algos, key)
@@ -586,6 +588,7 @@ end
 
 const conv4x_algos = Dict()
 function conv4x_algo(w::KnetArray{T},x::KnetArray{T},dy::KnetArray{T},dx::KnetArray{T}; handle=CUDNN.handle(), o...) where {T}
+    return (0, cudnnWorkSpace())
     global conv4x_algos, requestedAlgoCount, returnedAlgoCount, perfResults
     key = (T,size(w),size(x),o...)
     if haskey(conv4x_algos, key)
