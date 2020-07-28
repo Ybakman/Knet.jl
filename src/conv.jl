@@ -375,7 +375,7 @@ mutable struct CD; ptr
         mode = CUDNN.cudnnConvolutionMode_t(mode)
         CUDNN.cudnnSetConvolutionNdDescriptor(d[1],nd,cdsize(padding,nd),cdsize(stride,nd),cdsize(dilation,nd),mode,dt)
         cd = new(d[1])
-        println(group)
+        CUDNN.cudnnSetConvolutionGroupCount(cd,group)
         # finalizer(x->@cudnn(cudnnDestroyConvolutionDescriptor,(Cptr,),x.ptr),cd)
         finalizer(x->CUDNN.cudnnDestroyConvolutionDescriptor(x.ptr),cd)
         return cd
