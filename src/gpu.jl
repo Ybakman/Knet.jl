@@ -2,6 +2,7 @@ using CUDA, TimerOutputs, Libdl, Pkg.Artifacts
 const libknet8 = Libdl.find_library(["libknet8"], [artifact"libknet8"])
 const tk = CUDA.find_toolkit()
 const tkver = isempty(tk) ? v"0" : CUDA.parse_toolkit_version(CUDA.find_cuda_binary("ptxas", tk)) # v"0" because "nothing" will crash precompilation
+println(tkver)
 const cudnnver = v"7" # cudnn version not read automatically. hardcoded to v7
 const to = TimerOutput()
 const Cptr = Ptr{Cvoid}
